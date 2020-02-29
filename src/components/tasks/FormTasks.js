@@ -1,13 +1,14 @@
-import React from 'react';
+import React from "react";
 
 
 const FormTasks = () => {
+
   return (
     <div className="p-4">
       <form>
         <div className="col-row gap-2">
           <div className="col-9">
-            <input 
+            <input
               type="text"
               name="nameTask"
               placeholder="Write the task name"
@@ -18,7 +19,9 @@ const FormTasks = () => {
             <button
               type="submit"
               className="btn btn-100 btn-secondary box-shadow-s"
-            >Add task</button>
+            >
+              Add task
+            </button>
           </div>
         </div>
       </form>
@@ -26,4 +29,4 @@ const FormTasks = () => {
   );
 };
 
-export default FormTasks
+export default FormTasks;
