@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 const FlexLI = styled.li`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 
   p{
     flex: 1 1 0;

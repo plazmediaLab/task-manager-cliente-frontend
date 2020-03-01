@@ -74,7 +74,8 @@ const TasksList = () => {
         <div className="br-s card box-shadow-m">
           <div className="card-head bg-2 jc-spaceB">
             <h3><i className=" a-pied-piper-last-iso af-m"></i> Tasks list: Intranet</h3>
-            <button type="button" className="btn btn-s btn-secondary">Delete project</button>
+            <button type="button" className="btn btn-s btn-secondary">
+              <i className="a-cube"></i>&nbsp; Delete project</button>
           </div>
           <div className="card-body">
             <ul className="list-group ab">

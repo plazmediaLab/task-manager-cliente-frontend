@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import styled from '@emotion/styled';
+// Contex
+import projectContext from '../../contex/projects/projectContext' 
 // Components
 import ItemProject from './ItemProject';
 
@@ -27,20 +29,25 @@ const MainContainer = styled.div`
 
 const ProjectList = () => {
 
-  // Data Test 
-  const projects = [
-    {name: 'Tienda virtual para la empresa'},
-    {name: 'Intranet'},
-    {name: 'Hacer la maleta'},
-    {name: 'Recoger los papeles'},
-    {name: 'Diseño de sitios WEB'}
-  ]
+  // CONTEX
+  const projectsContext = useContext(projectContext)
+  // Destructuring
+  const {projectsList, getProjects} =  projectsContext;
+
+  // UseEffect
+  useEffect(() => {
+    // Get ptojects when load page
+    getProjects(projectsList)
+  }, []);
+
+  if(projectsList.length === 0) return null;
+
 
   return (
     <MainContainer>
       <ul>
         <ItemProject 
-          projects={projects}
+          projectsList={projectsList}
         />
       </ul>
     </MainContainer>

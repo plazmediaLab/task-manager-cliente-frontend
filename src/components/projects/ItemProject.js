@@ -22,11 +22,11 @@ const BtnLi = styled.button`
 `;
 
 
-const ItemProject = ({ projects }) => {
+const ItemProject = ({ projectsList }) => {
   return (
     <Fragment>
-      {projects.map(item => (
-        <li>
+      {projectsList.map(item => (
+        <li key={item.id}>
           <BtnLi
             type="button"
           ><i className="a-cube"></i>&nbsp; {item.name}</BtnLi>
