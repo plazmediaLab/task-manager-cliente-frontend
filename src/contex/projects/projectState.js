@@ -8,7 +8,10 @@ import projectReducer from './projectReducer';
 import {
   FORM_NEWPROJECT,
   GET_PROJECT,
-  ADD_PROJECT
+  ADD_PROJECT,
+  VALIDATE_FORM,
+  ACTUAL_PROJECT,
+  DELETE_PROJECT,
 } from '../../types/'
 
 const ProjectState = props => {
@@ -24,7 +27,9 @@ const ProjectState = props => {
 
   const initialState = {
     projects: [],
-    newProject: false
+    newProject: false,
+    errorform: false,
+    actualproject: null
   }
 
   // Dispatch para ejecutar las acciones
@@ -56,15 +61,43 @@ const ProjectState = props => {
     })
   };
 
+  // Validate Form
+  const showError = () =>{
+    dispatch({
+      type: VALIDATE_FORM
+    })
+  }
+
+  // Project active
+  const actualProject = (projectId) => {
+    dispatch({
+      type: ACTUAL_PROJECT,
+      payload: projectId
+    })
+  };
+
+  // Delete project
+  const deleteProject = (projectId) => {
+    dispatch({
+      type: DELETE_PROJECT,
+      payload: projectId
+    }) 
+  };
+
 
   return (
     <projectContext.Provider
       value={{
         projectsList: state.projects,
         newProject: state.newProject,
+        errorform: state.errorform,
+        actualproject: state.actualproject,
         displayFromNewProject,
         getProjects,
-        addNewProject
+        addNewProject,
+        showError,
+        actualProject,
+        deleteProject
       }}
     >
       {props.children}

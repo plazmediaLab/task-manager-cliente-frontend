@@ -22,7 +22,7 @@ const Main = styled.main`
   display: grid;
   overflow: auto;
   grid-template-columns: 1fr;
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto minmax(2rem, auto) 1fr;
   max-height: 100%;
   -webkit-box-sizing: border-box;
     box-sizing: border-box;

@@ -1,5 +1,7 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import styled from '@emotion/styled';
+// Contex
+import projectContext from '../../contex/projects/projectContext' 
 
 
 const BtnLi = styled.button`
@@ -23,12 +25,19 @@ const BtnLi = styled.button`
 
 
 const ItemProject = ({ projectsList }) => {
+
+  // CONTEX
+  const projectsContext = useContext(projectContext)
+  // Destructuring
+  const {actualProject} =  projectsContext;
+
   return (
     <Fragment>
       {projectsList.map(item => (
         <li key={item.id}>
           <BtnLi
             type="button"
+            onClick={() => actualProject(item.id)}
           ><i className="a-cube"></i>&nbsp; {item.name}</BtnLi>
         </li>
       ))}

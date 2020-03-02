@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import projectContext from '../../contex/projects/projectContext' 
 // Components
 import ItemProject from './ItemProject';
+import ListProjectsEmpty from './ListProjectsEmpty';
 
 
 const MainContainer = styled.div`
@@ -40,16 +41,25 @@ const ProjectList = () => {
     getProjects(projectsList)
   }, []);
 
-  if(projectsList.length === 0) return null;
-
 
   return (
     <MainContainer>
-      <ul>
-        <ItemProject 
-          projectsList={projectsList}
-        />
-      </ul>
+
+      {projectsList.length === 0 
+        ?
+        (
+          <ListProjectsEmpty />
+        )
+        :
+        (
+          <ul>
+            <ItemProject 
+              projectsList={projectsList}
+            />
+          </ul>
+        )
+      }
+      
     </MainContainer>
   );
 };

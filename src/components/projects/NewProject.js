@@ -7,7 +7,9 @@ const NewProject = () => {
 
   // CONTEX
   const projectsContext = useContext(projectContex)
-  const {newProject, displayFromNewProject, addNewProject} =  projectsContext;
+  const {
+    newProject, errorform, displayFromNewProject, addNewProject, showError
+  } =  projectsContext;
 
   // STATE
   const [nameproject, setNameProject] = useState({
@@ -32,6 +34,7 @@ const NewProject = () => {
     
     // Validate field
     if(name === ''){
+      showError(true);
       return
     }
 
@@ -82,6 +85,11 @@ const NewProject = () => {
           null
         )
       }
+
+      {errorform 
+      ? <p className="font-0 msn msn-error mt-2 txt-a-c">
+        <i className="a-info-warning"></i>&nbsp; The field is obligatory</p> 
+      : null}
 
     </Fragment>
   );

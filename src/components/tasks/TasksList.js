@@ -1,7 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import styled from '@emotion/styled';
+// Import Contex
+import projectContext from '../../contex/projects/projectContext'
 // Components
 import ItemTask from './ItemTask';
+import EmptySelectProject from './EmptySelectProject';
 
 const ListContainer = styled.div`
   display: grid;
@@ -22,6 +25,11 @@ const ListContainer = styled.div`
       color: var(--plaz-bright);
       text-align: center;
 
+      h3{
+        overflow: hidden;
+        text-align: left;
+        padding-right: 2rem;
+      }
       button{
         background-color: var(--tomato-dark-1)!important;
         border-color: var(--tomato-dark-1)!important;
@@ -69,13 +77,34 @@ const TasksList = () => {
     {name: 'Selebrar lanzamiento', state: false},
   ]
 
+  // CONTEX
+  const projectsContext = useContext(projectContext);
+  const {actualproject, deleteProject} =  projectsContext;
+
+  if(!actualproject){
+    return <EmptySelectProject />
+  }
+
+  // Destructuring first position of actualproject
+  const [projectActive] = actualproject;
+
+  // Delete actual project
+  const onClickDelete = () => {
+    deleteProject(projectActive.id)
+  };
+
   return (
       <ListContainer>
         <div className="br-s card box-shadow-m">
           <div className="card-head bg-2 jc-spaceB">
-            <h3><i className=" a-pied-piper-last-iso af-m"></i> Tasks list: Intranet</h3>
-            <button type="button" className="btn btn-s btn-secondary">
-              <i className="a-cube"></i>&nbsp; Delete project</button>
+            <h3><i className=" a-pied-piper-last-iso af-m"></i> Tasks list: {projectActive.name}</h3>
+            <button 
+              type="button"
+              className="btn btn-s btn-secondary"
+              onClick={onClickDelete}
+            >
+              <i className="a-cube"></i>&nbsp; Delete project
+            </button>
           </div>
           <div className="card-body">
             <ul className="list-group ab">
