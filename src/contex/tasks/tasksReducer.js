@@ -5,6 +5,9 @@ import {
   VALIDATE_TASK,
   DELETE_TASK,
   STATE_TASK,
+  ACTUAL_TASK,
+  UPDATE_TASK,
+  CLEANACTUAL_TASK,
 } from '../../types/index';
 
 
@@ -21,7 +24,8 @@ export default (state, action) => {
         return{
           ...state,
           tasksList: [action.payload, ...state.tasksList],
-          errorTask: false
+          errorTask: false,
+          actualTask: null
         }
       case VALIDATE_TASK:
         return{
@@ -35,14 +39,25 @@ export default (state, action) => {
             item => item.id !== action.payload 
           )
         }
+      case UPDATE_TASK:
       case STATE_TASK:
         return{
           ...state,
-          tasksproject: state.tasksproject.map(
+          tasksList: state.tasksList.map(
             item => item.id === action.payload.id
             ? action.payload
             : item
-          )
+          ),
+        }
+      case ACTUAL_TASK:
+        return{
+          ...state,
+          actualTask: action.payload
+        }
+      case CLEANACTUAL_TASK:
+        return{
+          ...state,
+          actualTask: null
         }
 
 

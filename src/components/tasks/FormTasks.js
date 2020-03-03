@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useState, useEffect, useRef} from "react";
 import styled from '@emotion/styled';
 import { v4 as uuidv4 } from 'uuid';
 // Import Contex
@@ -21,7 +21,30 @@ const FormTasks = () => {
   const {actualproject} =  projectsContext;
   // CONTEX tasks
   const taskContext = useContext(tasksContext)
-  const {errorTask, addTask, validateTask, getTasks} =  taskContext;
+  const {
+    errorTask,
+    actualtask,
+    addTask,
+    validateTask,
+    getTasks,
+    updateEditTask,
+    cleanActualTask
+  } =  taskContext;
+
+  // useRef
+  let inputName = useRef(null)
+
+  // useEffect
+  useEffect(() => {
+    if(actualtask){
+      setTask(actualtask)
+      inputName.current.focus();
+    }else{
+      setTask({
+        nameTask: ''
+      })
+    }
+  }, [actualtask]);
 
   // STATE
   const [task, setTask] = useState({
@@ -59,13 +82,25 @@ const FormTasks = () => {
       return;
     }
 
+    // If Edit or New task
+    if(!actualtask){
+
+      // ADD the new task
+      task.projectID = projectActive.id
+      task.state = false;
+      task.id = uuidv4()
+      addTask(task)
+    }else{
+      // Update task edit
+      task.state = false;
+      updateEditTask(task);
+
+      // Clean actual task 
+      cleanActualTask()
+    }
+
     // Pass teh validation
 
-    // ADD the new task
-    task.projectID = projectActive.id
-    task.state = false;
-    task.id = uuidv4()
-    addTask(task)
 
     // GET tasks
     getTasks(projectActive.id)
@@ -91,14 +126,18 @@ const FormTasks = () => {
               className="input-100 box-shadow-s"
               value={nameTask}
               onChange={handleChange}
+              ref={inputName}
             />
           </div>
           <div className="col-3">
             <button
               type="submit"
-              className="btn btn-100 btn-secondary box-shadow-s"
-            >
-              Add task
+              className={actualtask ? 'btn btn-100 btn-blue box-shadow-s' : 'btn btn-100 btn-secondary box-shadow-s'}
+            ><i className={actualtask ? 'a-createmode_editedit' : ''}></i>&nbsp;
+              {actualtask 
+                ? 'Edit task' 
+                : 'Add task'
+              }
             </button>
           </div>
         </div>

@@ -30,7 +30,7 @@ const ItemTask = ({ item }) => {
     const [actualProjectInf] = actualproject
   // CONTEX tasks
   const taskContext = useContext(tasksContext)
-  const {deleteTask, getTasks, updateStateTask} =  taskContext;
+  const {deleteTask, getTasks, updateStateTask, actualTask} =  taskContext;
 
   // onClick delete
   const onClickDelete = (id_arg) => {
@@ -46,6 +46,11 @@ const ItemTask = ({ item }) => {
       task_arg.state = true;
     }
     updateStateTask(task_arg)
+  };
+
+  // Extract task to set in actualTask to edit
+  const handleActualTask = (task_arg) => {
+    actualTask(task_arg)
   };
 
   return (
@@ -75,6 +80,7 @@ const ItemTask = ({ item }) => {
           type="button"
           className="btn btn-s-c btn-blue"
           title="Edit"
+          onClick={() => {handleActualTask(item)}}
         >
           <i className="a-createmode_editedit"></i>
         </button>

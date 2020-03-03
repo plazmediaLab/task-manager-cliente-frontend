@@ -10,6 +10,8 @@ import {
   DELETE_TASK,
   STATE_TASK,
   ACTUAL_TASK,
+  UPDATE_TASK,
+  CLEANACTUAL_TASK,
 } from '../../types/index';
 
 const TasksState = props => {
@@ -27,7 +29,8 @@ const TasksState = props => {
       {id: 10, nameTask: 'Selebrar lanzamiento', state: false, projectID: 2},
     ],
     tasksproject: null,
-    errorTask: false
+    errorTask: false,
+    actualtask: null
   }
 
   // Create dispatch & state
@@ -72,7 +75,28 @@ const TasksState = props => {
     })
   };
 
-  // TODO · Agregar dispatch ACTUAL_TASK 03/02/2020 
+  // Extract one task to edit
+  const actualTask = (task_arg) => {
+    dispatch({
+      type: ACTUAL_TASK,
+      payload: task_arg
+    })
+  };
+
+  // Update edit task
+  const updateEditTask = (task_arg) => {
+    dispatch({
+      type: UPDATE_TASK,
+      payload: task_arg
+    })
+  }; 
+
+  // Clean the actual task selected
+  const cleanActualTask = () => {
+    dispatch({
+      type: CLEANACTUAL_TASK,
+    })
+  };
 
   return (
     <TasksContext.Provider
@@ -80,11 +104,15 @@ const TasksState = props => {
         tasksList: state.tasksList,
         tasksproject: state.tasksproject,
         errorTask: state.errorTask,
+        actualtask: state.actualTask,
         getTasks,
         addTask,
         validateTask,
         deleteTask,
-        updateStateTask
+        updateStateTask,
+        actualTask,
+        updateEditTask,
+        cleanActualTask
       }}
     >
       {props.children}

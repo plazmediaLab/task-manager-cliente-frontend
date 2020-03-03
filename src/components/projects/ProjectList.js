@@ -39,6 +39,8 @@ const ProjectList = () => {
   useEffect(() => {
     // Get ptojects when load page
     getProjects(projectsList)
+
+    // eslint-disable-next-line
   }, []);
 
 
