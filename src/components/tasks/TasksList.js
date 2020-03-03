@@ -1,10 +1,13 @@
 import React, {useContext} from 'react';
 import styled from '@emotion/styled';
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
 // Import Contex
 import projectContext from '../../contex/projects/projectContext'
+import tasksContext from '../../contex/tasks/tasksContext'
 // Components
 import ItemTask from './ItemTask';
 import EmptySelectProject from './EmptySelectProject';
+import EmptyTasksList from './EmptyTasksList';
 
 const ListContainer = styled.div`
   display: grid;
@@ -29,6 +32,7 @@ const ListContainer = styled.div`
         overflow: hidden;
         text-align: left;
         padding-right: 2rem;
+        line-height: 1.5;
       }
       button{
         background-color: var(--tomato-dark-1)!important;
@@ -63,23 +67,12 @@ const ListContainer = styled.div`
 
 const TasksList = () => {
 
-  // Data Test 
-  const projactsList = [
-    {name: 'Conectar servidor', state: true},
-    {name: 'Crear la API', state: true},
-    {name: 'Seleccionar equipo de trabajo', state: false},
-    {name: 'Logo', state: true},
-    {name: 'Pagar por adelantado', state: false},
-    {name: 'Tramitar visas', state: false},
-    {name: 'Elegir plataformas de pago', state: true},
-    {name: 'Elegir hosting', state: false},
-    {name: 'Paleta de colores', state: true},
-    {name: 'Selebrar lanzamiento', state: false},
-  ]
-
-  // CONTEX
+  // CONTEX projects
   const projectsContext = useContext(projectContext);
   const {actualproject, deleteProject} =  projectsContext;
+  // CONTEX tasks
+  const taskContext = useContext(tasksContext);
+  const {tasksproject} =  taskContext;
 
   if(!actualproject){
     return <EmptySelectProject />
@@ -108,14 +101,22 @@ const TasksList = () => {
           </div>
           <div className="card-body">
             <ul className="list-group ab">
-              {projactsList.length === 0 
-                ? <p>Emty list</p>
+              {tasksproject.length === 0 
+                ? <EmptyTasksList />
                 
-                :projactsList.map(item => (
-                    <ItemTask 
-                    item={item}
-                    />
-                  ))
+                :<TransitionGroup>
+                  {tasksproject.map(item => (
+                    <CSSTransition
+                      key={item.id}
+                      timeout={200}
+                      classNames="task"
+                    >
+                      <ItemTask
+                        item={item}
+                      />
+                    </CSSTransition>
+                  ))}
+                </TransitionGroup>
               }
             </ul>
           </div>

@@ -1,7 +1,9 @@
 import React, { Fragment, useContext } from 'react';
 import styled from '@emotion/styled';
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
 // Contex
 import projectContext from '../../contex/projects/projectContext' 
+import tasksContext from '../../contex/tasks/tasksContext' 
 
 
 const BtnLi = styled.button`
@@ -26,21 +28,38 @@ const BtnLi = styled.button`
 
 const ItemProject = ({ projectsList }) => {
 
-  // CONTEX
+  // CONTEX projects
   const projectsContext = useContext(projectContext)
   // Destructuring
   const {actualProject} =  projectsContext;
+  // CONTEX tasks
+  const taskContext = useContext(tasksContext)
+  const {getTasks} =  taskContext;
+
+  // Funtion to add the current project
+  const selectProject = (id_arg) => {
+    actualProject(id_arg); // Set the actual project
+    getTasks(id_arg) // Find matches tasks 
+  };
 
   return (
     <Fragment>
-      {projectsList.map(item => (
-        <li key={item.id}>
-          <BtnLi
-            type="button"
-            onClick={() => actualProject(item.id)}
-          ><i className="a-cube"></i>&nbsp; {item.name}</BtnLi>
-        </li>
-      ))}
+      <TransitionGroup>
+        {projectsList.map(item => (
+          <CSSTransition
+            key={item.id}
+            timeout={200}
+            classNames="task"
+          >
+            <li>
+              <BtnLi
+                type="button"
+                onClick={() => selectProject(item.id)}
+              ><i className="a-cube"></i>&nbsp; {item.name}</BtnLi>
+            </li>
+          </CSSTransition>
+        ))}
+      </TransitionGroup>
     </Fragment>
   );
 };
