@@ -1,6 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useContext, useRef} from 'react';
 import styled from '@emotion/styled';
 import {Link} from 'react-router-dom';
+// Contex
+import AlertContex from '../../contex/alerts/alertContext';
 
 
 const MainContainer = styled.div`
@@ -26,6 +28,9 @@ const LoginGrid = styled.div`
   div.txt-a-c{
     color: var(--text-light);
   }
+  p.msn{
+    text-align: center;
+  }
 
   @media (max-width: 589px){
     width: 85%;
@@ -35,6 +40,18 @@ const LoginGrid = styled.div`
 
 
 const SingUp = () => {
+
+  // REFS
+  const inputName = useRef(null);
+  const inputPass = useRef(null);
+  const inputPassRepeat = useRef(null);
+  
+
+  // Extract values of context
+  const alertContex = useContext(AlertContex);
+  // Destructuring
+  const { alert, showAlert } = alertContex
+
   // STATE
   const [newuser, setNewUser] = useState({
     name: '',
@@ -59,12 +76,36 @@ const SingUp = () => {
     e.preventDefault();
     
     // Validate fields
+    if(
+      name.trim()         === ''  ||
+      email.trim()        === ''  ||
+      pass.trim()         === ''  ||
+      passRepeat.trim()   === ''
+      ){
+
+      showAlert('msn-warning', 'The fields are required');
+      inputName.current.focus()
+      return;
+
+    }
 
     // Min 6 characters length
+    if(pass.length < 6){
+      showAlert('msn-info', 'The password must have at least 6 characters', 'a-vpn_key');
+      inputPass.current.focus()
+      return;
+    }
 
     // Passwords are same
+    if(pass !== passRepeat){
+      showAlert('msn-error', 'The passwords are not equald', 'a-httpslock');
+      inputPassRepeat.current.focus()
+      return;
+    }
 
     // Sent to action
+    // TODO · Realizar la conexión con la API 03/09/2020 
+
   }
 
   return (
@@ -89,6 +130,7 @@ const SingUp = () => {
               placeholder="Write your name"
               onChange={onChange}
               value={name}
+              ref={inputName}
             />
             <div className="icon-input">
               <i className="a-plaz-astronaut"></i>
@@ -119,6 +161,7 @@ const SingUp = () => {
               placeholder="Write your password"
               onChange={onChange}
               value={pass}
+              ref={inputPass}
             />
             <div className="icon-input">
               <i className="a-vpn_key"></i>
@@ -134,6 +177,7 @@ const SingUp = () => {
               placeholder="Repeat your password"
               onChange={onChange}
               value={passRepeat}
+              ref={inputPassRepeat}
             />
             <div className="icon-input">
               <i className="a-httpslock"></i>
@@ -144,9 +188,11 @@ const SingUp = () => {
           </div>
         </form>
 
+        {alert ? <p className={`msn ${alert.category}`}><i className={alert.icon}></i>&nbsp; {alert.msn}</p> : null}
+
         <hr />
         <div className="txt-a-c">
-          <Link to={'/'} className="btn btn-interactive btn-empty-cancel">
+          <Link to={'/'} className="btn btn-100 btn-empty-cancel">
             <i className="a-arrow_back"></i> Back
           </Link>
         </div>
