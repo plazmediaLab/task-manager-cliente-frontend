@@ -16,3 +16,10 @@ export const CLEANACTUAL_TASK = 'CLEANACTUAL_TASK'
 
 export const SHOW_ALERT = 'SHOW_ALERT'
 export const HIDE_ALERT = 'HIDE_ALERT'
+
+export const SINGUP_SUCCESSFULLY = 'SINGUP_SUCCESSFULLY'
+export const SINGUP_ERROR = 'SINGUP_ERROR'
+export const GET_USER = 'GET_USER'
+export const LOGIN_SUCCESSFULLY = 'LOGIN_SUCCESSFULLY'
+export const LOGIN_ERROR = 'LOGIN_ERROR'
+export const LOG_OUT = 'LOG_OUT'

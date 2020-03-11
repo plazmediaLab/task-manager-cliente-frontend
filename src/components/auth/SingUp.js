@@ -1,8 +1,9 @@
-import React, {useState, useContext, useRef} from 'react';
+import React, {useState, useContext, useRef, useEffect} from 'react';
 import styled from '@emotion/styled';
 import {Link} from 'react-router-dom';
 // Contex
 import AlertContex from '../../contex/alerts/alertContext';
+import AuthContex from '../../contex/authentication/authContext';
 
 
 const MainContainer = styled.div`
@@ -39,7 +40,7 @@ const LoginGrid = styled.div`
 `;
 
 
-const SingUp = () => {
+const SingUp = (props) => {
 
   // REFS
   const inputName = useRef(null);
@@ -47,21 +48,39 @@ const SingUp = () => {
   const inputPassRepeat = useRef(null);
   
 
-  // Extract values of context
+  // ALERT -> Extract values of context
   const alertContex = useContext(AlertContex);
   // Destructuring
   const { alert, showAlert } = alertContex
+  // AUTHENTICATION -> Extract values of context
+  const authContex = useContext(AuthContex);
+  // Destructuring
+  const { message, authentication, singupUser } = authContex;
+
+  // useEffect
+  // In case of registration, duplicate or authenticated
+  useEffect(() => {
+    
+    if(authentication){
+      props.history.push('/projects');
+    }
+
+    if(message){
+      showAlert(message.category, message.msn, message.icon)
+    }
+
+  }, [message, authentication, props.history]);
 
   // STATE
   const [newuser, setNewUser] = useState({
     name: '',
     email: '',
-    pass: '',
+    password: '',
     passRepeat: ''
   });
 
   // Destructuring
-  const { name, email, pass, passRepeat  } = newuser;
+  const { name, email, password, passRepeat  } = newuser;
 
   // onChange
   const onChange = (e) => {
@@ -79,32 +98,36 @@ const SingUp = () => {
     if(
       name.trim()         === ''  ||
       email.trim()        === ''  ||
-      pass.trim()         === ''  ||
+      password.trim()         === ''  ||
       passRepeat.trim()   === ''
       ){
 
-      showAlert('msn-warning', 'The fields are required');
+      showAlert('msn-warning', 'All fields are required');
       inputName.current.focus()
       return;
 
     }
 
     // Min 6 characters length
-    if(pass.length < 6){
+    if(password.length < 6){
       showAlert('msn-info', 'The password must have at least 6 characters', 'a-vpn_key');
       inputPass.current.focus()
       return;
     }
 
     // Passwords are same
-    if(pass !== passRepeat){
+    if(password !== passRepeat){
       showAlert('msn-error', 'The passwords are not equald', 'a-httpslock');
       inputPassRepeat.current.focus()
       return;
     }
 
     // Sent to action
-    // TODO · Realizar la conexión con la API 03/09/2020 
+    singupUser({
+      name,
+      email,
+      password
+    });
 
   }
 
@@ -155,12 +178,12 @@ const SingUp = () => {
             <label htmlFor="pass">Password</label>
             <input 
               type="password"
-              name="pass"
-              id="pass"
+              name="password"
+              id="password"
               className="input-100"
               placeholder="Write your password"
               onChange={onChange}
-              value={pass}
+              value={password}
               ref={inputPass}
             />
             <div className="icon-input">
