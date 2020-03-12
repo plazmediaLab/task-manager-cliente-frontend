@@ -13,7 +13,8 @@ import {
   LOG_OUT
 } from '../../types/index';
 // Axios
-import axiosClient from '../../config/axios'
+import axiosClient from '../../config/axios';
+import tokenAuth from '../../config/tokenAuth';
 
 const AuthState = props => {
 
@@ -22,26 +23,30 @@ const AuthState = props => {
     token: localStorage.getItem('token'),
     authentication: null,
     userInfo: null,
-    message: null
+    message: null,
+    loading: true
   }
 
   const [ state, dispatch ] = useReducer(AuthReducer, initialState);
 
   // Functions
+
+  // Sing UP user
   const singupUser = async data => {
     try {
 
-      console.log('Dam...');
       const response = await axiosClient.post('/api/users', data);
-      console.log(response.data);
 
       dispatch({
         type: SINGUP_SUCCESSFULLY,
         payload: response.data
       })
+
+      // Get user
+      authUser();
       
     } catch (error) {
-      console.log(error.response)
+
       const alert = {
         category: 'msn-error',
         msn: error.response.data.msn,
@@ -52,7 +57,81 @@ const AuthState = props => {
         type: SINGUP_ERROR,
         payload: alert
       })
+
     }
+  }
+
+  // Return the autentication user
+  const authUser = async () => {
+
+    const token = localStorage.getItem('token');
+
+    if(token){
+
+      tokenAuth(token);
+
+    }
+
+    try {
+
+      const response = await axiosClient.get('/api/auth');
+      // console.log(response);
+      dispatch({
+        type: GET_USER,
+        payload: response.data.user
+      })
+      
+    } catch (error) {
+
+      console.log(error.response)
+
+      dispatch({
+        type: LOGIN_ERROR,
+      })  
+
+    }
+
+  }
+
+  // When user login
+  const loginUser = async (data) => {
+    
+    try {
+      
+      const response = await axiosClient.post('/api/auth', data);
+      console.log(response)
+
+      dispatch({
+        type: LOGIN_SUCCESSFULLY,
+        payload: response.data
+      })
+
+      // Get user
+      authUser();
+
+    } catch (error) {
+
+      console.log(error.response.data.msn);
+      const alert = {
+        category: 'msn-error',
+        msn: error.response.data.msn,
+        icon: 'a-ban'
+      }
+
+      dispatch({
+        type: LOGIN_ERROR,
+        payload: alert
+      })
+
+    }
+
+  };
+
+  // Log out
+  const logOUT = () => {
+    dispatch({
+      type: LOG_OUT,
+    })
   }
 
   return(
@@ -62,7 +141,11 @@ const AuthState = props => {
         authentication: state.authentication,
         userInfo: state.userInfo,
         message: state.message,
-        singupUser
+        loading: state.loading,
+        singupUser,
+        loginUser,
+        authUser,
+        logOUT
       }}
     >
       {props.children}

@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from '@emotion/styled';
 // Componets
 import Sidebar from '../layout/Sidebar';
 import NavBar from '../layout/NavBar';
 import FormTasks from '../tasks/FormTasks';
 import TasksList from '../tasks/TasksList';
+
+import AuthContex from '../../contex/authentication/authContext';
 
 
 const GridMainContainer = styled.div`
@@ -30,6 +32,15 @@ const Main = styled.main`
 
 
 const Projects = () => {
+
+  // Extract authentication info
+  const authContext = useContext(AuthContex);
+  const { authUser } = authContext;
+
+  useEffect(() => {
+    authUser();
+  }, [/* dependencia */]);
+
   return (
     <GridMainContainer>
       <Sidebar />

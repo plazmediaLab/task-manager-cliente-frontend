@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from '@emotion/styled';
+
+import AuthContex from '../../contex/authentication/authContext';
 
 
 const Container = styled.div`
@@ -25,7 +27,7 @@ const Container = styled.div`
     }
   } 
 
-  a{
+  button{
     color: var(--White);
 
     i{
@@ -41,10 +43,34 @@ const Container = styled.div`
 
 
 const NavBar = () => {
+
+  // Extract authentication info
+  const authContext = useContext(AuthContex);
+  const { userInfo, authUser, logOUT } = authContext;
+
+  useEffect(() => {
+    authUser();
+  }, [/* dependencia */]);
+
+  let colorIcon = userInfo ? 'txt-secondary' : null ;
+
   return (
     <Container>
-      <p><i className="a-plaz-astronaut"></i>&nbsp; Evan Alain</p>
-      <a href="#!" className="btn btn-s-c btn-empty-orange">Log out &nbsp;<i className="a-sign-out"></i></a>
+
+      <p><i className={`a-plaz-astronaut ${colorIcon}`}></i>&nbsp; { userInfo ? userInfo.name : null } </p>
+      
+      { userInfo 
+        ?
+
+          <button
+            className="btn btn-s-c btn-empty-orange"
+            onClick={() => logOUT()}
+          >
+            Log out &nbsp;<i className="a-sign-out"></i>
+          </button>
+
+        : null }
+
     </Container>
   );
 };

@@ -10,10 +10,18 @@ import AuthState from './contex/authentication/authState';
 import Login from './components/auth/Login';
 import SingUp from './components/auth/SingUp';
 import Projects from './components/projects/Projects';
+import PrivateRoute from './components/routes/PrivateRoute';
+
+// Token
+import tokenAuth from './config/tokenAuth';
+
+// Check for a token
+const token = localStorage.getItem('token');
+if(token){
+  tokenAuth(token)
+}
 
 function App() {
-
-  console.log(process.env.REACT_APP_BACKEND_URL);
 
   return (
     <ProjectState>
@@ -24,7 +32,7 @@ function App() {
               <Switch>
                 <Route exact path="/" component={Login}/>
                 <Route exact path="/sing-up" component={SingUp}/>
-                <Route exact path="/projects" component={Projects}/>
+                <PrivateRoute exact path="/projects" component={Projects}/>
               </Switch>
             </Router>
           </AuthState>
@@ -32,6 +40,7 @@ function App() {
       </TasksState>
     </ProjectState>
   );
+
 }
 
 export default App;

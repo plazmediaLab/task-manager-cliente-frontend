@@ -61,10 +61,12 @@ const SingUp = (props) => {
   // In case of registration, duplicate or authenticated
   useEffect(() => {
     
+    // If there is authentication, redirect control panel
     if(authentication){
       props.history.push('/projects');
     }
 
+    // If there is messages
     if(message){
       showAlert(message.category, message.msn, message.icon)
     }
@@ -98,7 +100,7 @@ const SingUp = (props) => {
     if(
       name.trim()         === ''  ||
       email.trim()        === ''  ||
-      password.trim()         === ''  ||
+      password.trim()     === ''  ||
       passRepeat.trim()   === ''
       ){
 
