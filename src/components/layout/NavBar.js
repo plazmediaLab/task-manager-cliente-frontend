@@ -50,6 +50,8 @@ const NavBar = () => {
 
   useEffect(() => {
     authUser();
+
+    // eslint-disable-next-line
   }, [/* dependencia */]);
 
   let colorIcon = userInfo ? 'txt-secondary' : null ;

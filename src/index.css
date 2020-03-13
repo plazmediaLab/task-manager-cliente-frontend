@@ -15,7 +15,7 @@ body{
 .task-enter-active,
 .project-enter-active{
   opacity: 1;
-  transition: opacity 200ms;
+  transition: opacity 500ms;
 }
 .task-exit,
 .project-exit{
@@ -24,5 +24,5 @@ body{
 .task-exit-active,
 .project-exit-active{
   opacity: 0;
-  transition: opacity 200ms;
+  transition: opacity 500ms;
 }

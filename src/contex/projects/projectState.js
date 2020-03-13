@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 // Context
 import projectContext from './projectContext';
 // Reducer
@@ -12,24 +12,19 @@ import {
   VALIDATE_FORM,
   ACTUAL_PROJECT,
   DELETE_PROJECT,
-} from '../../types/'
+  ERROR_PROJECT
+} from '../../types/';
+import axiosClient from '../../config/axios';
+
 
 const ProjectState = props => {
-
-  const projects = [
-    {id: 1, name: 'Tienda virtual para la empresa'},
-    {id: 2, name: 'Intranet'},
-    {id: 3, name: 'Hacer la maleta'},
-    {id: 4, name: 'Recoger los papeles'},
-    {id: 5, name: 'Diseño de sitios WEB'},
-    {id: 6, name: 'Concentrar datos en Contex'}
-  ]
 
   const initialState = {
     projects: [],
     newProject: false,
     errorform: false,
-    actualproject: null
+    actualproject: null,
+    message: null
   }
 
   // Dispatch para ejecutar las acciones
@@ -43,22 +38,60 @@ const ProjectState = props => {
   }
 
   // GET projects
-  const getProjects = () => {
-    dispatch({
-      type: GET_PROJECT,
-      payload: projects
-    })
+  const getProjects = async () => {
+    try {
+      
+      const response = await axiosClient.get('/api/projects')
+      
+      dispatch({
+        type: GET_PROJECT,
+        payload: response.data.projects
+      })
+
+    } catch (error) {
+
+      const alert = {
+        category: 'msn-error',
+        msn: 'There was a mistake...',
+        icon: 'a-security'
+      }
+
+      dispatch({
+        type: ERROR_PROJECT,
+        payload: alert
+      })
+
+    }
   }
 
   // ADD new project
-  const addNewProject = object_param => {
-    object_param.id = uuidv4()
+  const addNewProject = async object_param => {
+    // object_param.id = uuidv4()
 
-    // Incert to State
-    dispatch({
-      type: ADD_PROJECT,
-      payload: object_param  
-    })
+    try {
+      
+      const response = await axiosClient.post('/api/projects', object_param);
+      
+      // Incert to State
+      dispatch({
+        type: ADD_PROJECT,
+        payload: response.data
+      })
+
+    } catch (error) {
+
+      const alert = {
+        category: 'msn-error',
+        msn: 'There was a mistake...',
+        icon: 'a-security'
+      }
+
+      dispatch({
+        type: ERROR_PROJECT,
+        payload: alert
+      })
+
+    }
   };
 
   // Validate Form
@@ -77,11 +110,30 @@ const ProjectState = props => {
   };
 
   // Delete project
-  const deleteProject = (projectId) => {
-    dispatch({
-      type: DELETE_PROJECT,
-      payload: projectId
-    }) 
+  const deleteProject = async (projectId) => {
+    try {
+
+      await axiosClient.delete(`/api/projects/${projectId}`);
+
+      dispatch({
+        type: DELETE_PROJECT,
+        payload: projectId
+      });
+
+    } catch (error) {
+
+      const alert = {
+        category: 'msn-error',
+        msn: 'There was a mistake...',
+        icon: 'a-security'
+      }
+
+      dispatch({
+        type: ERROR_PROJECT,
+        payload: alert
+      })
+
+    }
   };
 
 
@@ -92,6 +144,7 @@ const ProjectState = props => {
         newProject: state.newProject,
         errorform: state.errorform,
         actualproject: state.actualproject,
+        message: state.message,
         displayFromNewProject,
         getProjects,
         addNewProject,

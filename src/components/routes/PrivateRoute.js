@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import AuthContext from '../../contex/authentication/authContext';
 
@@ -10,7 +10,9 @@ const PrivateRoute = ({ component: Component, ...props }) => {
 
   useEffect(() => {
     authUser()
-  }, [/* dependencia */]);
+
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Route {...props} render={ props => !authentication && !loading ? (

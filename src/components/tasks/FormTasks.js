@@ -1,6 +1,5 @@
 import React, {useContext, useState, useEffect, useRef} from "react";
 import styled from '@emotion/styled';
-import { v4 as uuidv4 } from 'uuid';
 // Import Contex
 import projectContext from '../../contex/projects/projectContext'
 import tasksContext from '../../contex/tasks/tasksContext' 
@@ -49,7 +48,6 @@ const FormTasks = () => {
   // STATE
   const [task, setTask] = useState({
     nameTask: '',
-    id: ''
   });
   // Destructuring
   const {nameTask} = task; 
@@ -86,10 +84,9 @@ const FormTasks = () => {
     if(!actualtask){
 
       // ADD the new task
-      task.projectID = projectActive.id
-      task.state = false;
-      task.id = uuidv4()
+      task.project = projectActive._id
       addTask(task)
+
     }else{
       // Update task edit
       task.state = false;
@@ -103,7 +100,7 @@ const FormTasks = () => {
 
 
     // GET tasks
-    getTasks(projectActive.id)
+    getTasks(projectActive._id)
 
     // Reset form
     setTask({

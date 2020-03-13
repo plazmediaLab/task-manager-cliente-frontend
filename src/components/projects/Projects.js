@@ -39,6 +39,8 @@ const Projects = () => {
 
   useEffect(() => {
     authUser();
+
+    // eslint-disable-next-line
   }, [/* dependencia */]);
 
   return (

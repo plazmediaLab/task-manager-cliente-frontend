@@ -71,6 +71,7 @@ const SingUp = (props) => {
       showAlert(message.category, message.msn, message.icon)
     }
 
+    // eslint-disable-next-line
   }, [message, authentication, props.history]);
 
   // STATE

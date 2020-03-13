@@ -26,16 +26,19 @@ const ItemTask = ({ item }) => {
   // CONTEX
   const projectsContext = useContext(projectContext);
   const {actualproject} =  projectsContext;
-    // Destructuring
-    const [actualProjectInf] = actualproject
+  
+  // Destructuring
+  // Complete tasks list
+  const [actualProjectInf] = actualproject
+
   // CONTEX tasks
   const taskContext = useContext(tasksContext)
-  const {deleteTask, getTasks, updateStateTask, actualTask} =  taskContext;
+  const {deleteTask, updateEditTask, actualTask} =  taskContext;
 
   // onClick delete
   const onClickDelete = (id_arg) => {
-    deleteTask(id_arg);
-    getTasks(actualProjectInf.id)
+    deleteTask(id_arg, actualProjectInf._id);
+    // getTasks(actualProjectInf.id)
   };
 
   // onClick update task
@@ -45,7 +48,7 @@ const ItemTask = ({ item }) => {
     }else{
       task_arg.state = true;
     }
-    updateStateTask(task_arg)
+    updateEditTask(task_arg)
   };
 
   // Extract task to set in actualTask to edit
@@ -55,7 +58,7 @@ const ItemTask = ({ item }) => {
 
   return (
     <Fragment>
-      <FlexLI key={item.projectID} className="list-item i-line">
+      <FlexLI key={item._id} className="list-item i-line">
         <p className="txt-a-l">{item.nameTask}</p>
 
         {item.state
@@ -88,7 +91,7 @@ const ItemTask = ({ item }) => {
           type="button"
           className="btn btn-s-c btn-cancel"
           title="Delete"
-          onClick={() => onClickDelete(item.id)}
+          onClick={() => onClickDelete(item._id)}
         >
           <i className="a-trash"></i>
         </button>

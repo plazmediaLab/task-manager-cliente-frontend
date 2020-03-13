@@ -47,15 +47,15 @@ const ItemProject = ({ projectsList }) => {
       <TransitionGroup>
         {projectsList.map(item => (
           <CSSTransition
-            key={item.id}
+            key={item._id}
             timeout={200}
             classNames="task"
           >
             <li>
               <BtnLi
                 type="button"
-                onClick={() => selectProject(item.id)}
-              ><i className="a-cube"></i>&nbsp; {item.name}</BtnLi>
+                onClick={() => selectProject(item._id)}
+              ><i className="a-cube"></i>&nbsp; {item.nameProject}</BtnLi>
             </li>
           </CSSTransition>
         ))}

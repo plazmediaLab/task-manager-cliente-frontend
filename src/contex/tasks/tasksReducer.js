@@ -4,7 +4,6 @@ import {
   ADD_TASK,
   VALIDATE_TASK,
   DELETE_TASK,
-  STATE_TASK,
   ACTUAL_TASK,
   UPDATE_TASK,
   CLEANACTUAL_TASK,
@@ -16,14 +15,12 @@ export default (state, action) => {
     case TASKS_PROJECT:
       return{
         ...state,
-        tasksproject: state.tasksList.filter(
-          item => item.projectID === action.payload
-        )
+        tasksproject: action.payload
       }
       case ADD_TASK:
         return{
           ...state,
-          tasksList: [action.payload, ...state.tasksList],
+          tasksproject: [action.payload, ...state.tasksproject],
           errorTask: false,
           actualTask: null
         }
@@ -35,16 +32,15 @@ export default (state, action) => {
       case DELETE_TASK:
         return{
           ...state,
-          tasksList: state.tasksList.filter(
-            item => item.id !== action.payload 
+          tasksproject: state.tasksproject.filter(
+            item => item._id !== action.payload 
           )
         }
       case UPDATE_TASK:
-      case STATE_TASK:
         return{
           ...state,
-          tasksList: state.tasksList.map(
-            item => item.id === action.payload.id
+          tasksproject: state.tasksproject.map(
+            item => item._id === action.payload._id
             ? action.payload
             : item
           ),

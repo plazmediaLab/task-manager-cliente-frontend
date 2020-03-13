@@ -18,12 +18,12 @@ const ListContainer = styled.div`
   -webkit-box-sizing: border-box;
     box-sizing: border-box;
 
-  div.card{ 
+  div.card{
     height: 100%;
     max-height: 100%;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    
+
     div.card-head{
       color: var(--plaz-bright);
       text-align: center;
@@ -55,8 +55,8 @@ const ListContainer = styled.div`
       box-sizing: border-box;
 
       ul.list-group{
-        height: 100%;
-        max-height: 85%;
+        /* height: 100%; */
+        max-height: 82%;
         display: block;
         overflow-y: auto;
       }
@@ -83,15 +83,16 @@ const TasksList = () => {
 
   // Delete actual project
   const onClickDelete = () => {
-    deleteProject(projectActive.id)
+    deleteProject(projectActive._id)
+    // TODO · Resolver lo del key | lo de cargar lista al agregar y borrar tareas 03/12/2020 
   };
 
   return (
       <ListContainer>
         <div className="br-s card box-shadow-m">
           <div className="card-head bg-2 jc-spaceB">
-            <h3><i className=" a-pied-piper-last-iso af-m"></i> Tasks list: {projectActive.name}</h3>
-            <button 
+            <h3><i className=" a-pied-piper-last-iso af-m"></i> Tasks list: {projectActive.nameProject}</h3>
+            <button
               type="button"
               className="btn btn-s btn-secondary"
               onClick={onClickDelete}
@@ -101,13 +102,13 @@ const TasksList = () => {
           </div>
           <div className="card-body">
             <ul className="list-group ab">
-              {tasksproject.length === 0 
+              {tasksproject.length === 0
                 ? <EmptyTasksList />
-                
+
                 :<TransitionGroup>
                   {tasksproject.map(item => (
                     <CSSTransition
-                      key={item.id}
+                      key={item._id}
                       timeout={200}
                       classNames="task"
                     >

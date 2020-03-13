@@ -13,12 +13,11 @@ const NewProject = () => {
 
   // STATE
   const [nameproject, setNameProject] = useState({
-    name: '',
-    id: ''
+    nameProject: ''
   });
 
   // Destructuring
-  const { name } = nameproject;
+  const { nameProject } = nameproject;
 
   // onChange input
   const onChangeNewProject = (e) => {
@@ -33,7 +32,7 @@ const NewProject = () => {
     e.preventDefault();
     
     // Validate field
-    if(name === ''){
+    if(nameProject === ''){
       showError(true);
       return
     }
@@ -43,7 +42,7 @@ const NewProject = () => {
 
     // Reset form
     setNameProject({
-      name: ''
+      nameProject: ''
     })
   }
 
@@ -68,11 +67,11 @@ const NewProject = () => {
           <div className="form-item">
             <input
               type="text"
-              name="name"
+              name="nameProject"
               placeholder="Write the project name"
               className="input-100"
               onChange={onChangeNewProject}
-              value={name}
+              value={nameProject}
             />
           </div>
           <button
