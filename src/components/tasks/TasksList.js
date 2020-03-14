@@ -84,7 +84,6 @@ const TasksList = () => {
   // Delete actual project
   const onClickDelete = () => {
     deleteProject(projectActive._id)
-    // TODO · Resolver lo del key | lo de cargar lista al agregar y borrar tareas 03/12/2020 
   };
 
   return (
@@ -108,13 +107,16 @@ const TasksList = () => {
                 :<TransitionGroup>
                   {tasksproject.map(item => (
                     <CSSTransition
-                      key={item._id}
                       timeout={200}
                       classNames="task"
+                      key={item._id}
                     >
+
                       <ItemTask
                         item={item}
+                        key={item._id}
                       />
+
                     </CSSTransition>
                   ))}
                 </TransitionGroup>
